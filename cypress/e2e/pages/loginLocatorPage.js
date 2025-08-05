@@ -1,4 +1,6 @@
 
+import WaitUtils from '../../support/utilities/waitUtils';
+
 const LoginPageLocators = {
     signInCTA: ".panel > .header > .authorization-link > a",
     email: "[id='email']",
@@ -7,11 +9,12 @@ const LoginPageLocators = {
     loggedUserName: ":nth-child(2) > .greet > .logged-in",
     dropdownMenu: ":nth-child(2) > .customer-welcome > .customer-name > .action",
     signOutCTA: "(//li[@class='authorization-link']//following-sibling::a)[1]"
+
 }
 
 export class LoginPage {
 
-    static login(username, password) {
+    login(username, password) {
         cy.get(LoginPageLocators.signInCTA).should('be.visible');
         cy.get(LoginPageLocators.signInCTA).click({ force: true });
         cy.get(LoginPageLocators.email).type(username);
@@ -20,10 +23,11 @@ export class LoginPage {
     }
 
     verifyLogoutCTA() {
-        cy.wait(10000);
-        // cy.get(LoginPageLocators.loggedUserName).should('have.text', 'Welcome, Test F Test L!');
+        WaitUtils.waitForElementToBeVisible(LoginPageLocators.dropdownMenu);
+        // loginPageLoc.loggedUserName().should('have.text', 'Welcome, Test F Test L!');
         cy.get(LoginPageLocators.dropdownMenu).click();
         cy.xpath(LoginPageLocators.signOutCTA).should('be.visible');
     }
 
 }
+// export default LoginPage; 

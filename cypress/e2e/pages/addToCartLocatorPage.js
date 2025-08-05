@@ -1,4 +1,4 @@
-export class AddToCartPage {
+class AddToCartPage {
 
     gearMenu() {
         return cy.xpath('//span[text()="Gear"]/ancestor::li')
@@ -36,55 +36,13 @@ export class AddToCartPage {
         return cy.get('div[class="minicart-wrapper"] > a')
     }
 
-    proceedToCheckout() {
+    proceedToCheckout(){
         return cy.get('button[title="Proceed to Checkout"]')
     }
 
-    orderSummary() {
+    orderSummary(){
         return cy.get('span[class="title"]')
     }
 
-
-    selectBag() {
-        cy.wait(2000);
-        this.gearMenu().trigger('mouseover');
-        this.bags().click();
-        this.bagsHeading().should('be.visible');
-    }
-
-    clickOnBagsByText(text) {
-        this.bagsList().each(($el) => {
-            if ($el.innerText.includes(text)) {
-                cy.wrap($el).click();
-            }
-        });
-    }
-
-    clickOnBagByTextEle(text) {
-        return this.bagsList().contains(text).click();
-    }
-
-    verifyTheBagPrice(amount) {
-        this.bagPrice().invoke('text').then((text) => {
-            const price = Number(text.replace(/[^0-9.-]+/g, ""));
-            cy.log(price);
-            expect(price).to.equal(amount);
-        });
-    }
-
-    verifyAddToCartItem() {
-        cy.wait(2000);
-        this.addToCartCTA().click();
-        this.successMsg().should('be.visible');
-        this.myCart().click();
-        cy.wait(2000);
-        this.proceedToCheckout().click();
-    }
-
-    verifyOrderSummary() {
-        cy.wait(8000);
-        this.orderSummary().should('be.visible');
-    }
-
-
 }
+export default AddToCartPage; 
