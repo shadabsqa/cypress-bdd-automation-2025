@@ -1,93 +1,113 @@
-# 📘 Cypress Mocha Automation Framework (JavaScript)
+# 🧪 Cypress BDD Automation Framework 2025
 
-This framework is a **Cypress-based test automation** setup for testing the **Luma eCommerce** application. It uses the **Mocha** test runner and follows the **Page Object Model (POM)** structure for maintainable, scalable test automation.
-
----
-
-## 📁 Folder Structure:
-
-Luma-Cypress-POC-2025/  
-│    
-├── cypress/  
-│   ├── e2e/  
-│   │   ├── actions/               # This folder contains JS files with business logic.  
-│   │   │                          # Example: loginActionPage.js handles the login steps.  
-│   │   │  
-│   │   ├── pages/                 # This contains Page Object files with element locators.  
-│   │   │                          # Example: loginLocatorPage.js stores selectors for login elements.  
-│   │   │  
-│   │   ├── tests/                 # This folder contains actual test cases.  
-│   │                              # Example: loginTest.cy.js runs the login test using actions/pages.  
-│   │  
-│   ├── fixtures/                  # This holds test data and environment-specific credentials.  
-│   │   ├── testData.json          # Common test data like email, password, etc.  
-│   │   ├── dev/                   # Development environment credentials.  
-│   │   └── production/            # Production environment credentials.  
-│   │  
-│   ├── support/  
-│       ├── commands.js            # Custom Cypress commands (like reusable login command).  
-│       └── e2e.js                 # Runs before every test — used for setup code.  
-│  
-├── cypress.config.js              # Main Cypress configuration file.  
-├── package.json                   # Project dependencies and npm scripts.  
-├── package-lock.json              # Auto-generated file to lock dependency versions.  
+A modern end-to-end test automation framework using **Cypress**, **Cucumber BDD**, **Page Object Model**, and **JavaScript**, with support for multiple environments, data-driven testing, and rich reporting.
 
 ---
 
-## 📌 In Simple Terms:
+## Project Structure
 
-- **tests/** – Where your **test scenarios** live  
-- **actions/** – Where your **test steps** (e.g., login actions) are written using page objects  
-- **pages/** – Where you define **UI elements** (selectors/locators)  
-- **fixtures/** – Where **test data and credentials** for dev/production are stored  
-- **support/** – Where **custom commands** and **setup hooks** reside  
-- **cypress.config.js** – Tells Cypress how to behave (config, baseUrl, timeouts, etc.)
+LUMA-CYPRESS-BDD-2025/
+- │
+- ├── cypress/
+- │   ├── cucumberReports/                   # Stores Cucumber JSON & HTML report files
+- │   ├── downloads/                         # Cypress downloads (e.g. files via browser)
+- │   ├── e2e/
+- │   │   ├── features/                      # Gherkin Feature files
+- │   │   │   ├── addToCart.feature
+- │   │   │   ├── addToCartPipeline.feature
+- │   │   │   └── login.feature
+- │   │   ├── pages/                         # Page Object files
+- │   │   │   ├── addToCartLocatorPage.js
+- │   │   │   └── loginLocatorPage.js
+- │   │   └── steps/                         # Step Definition files
+- │   │       ├── addToCartPipelineStepDef.js
+- │   │       ├── addToCartStepDef.js
+- │   │       └── loginStepDef.js
+- │   ├── fixtures/                          # Test data and environment-specific config
+- │   │   ├── dev/
+- │   │   ├── production/
+- │   │   └── testData.json
+- │   ├── reports/                           # Custom test execution reports (if any)
+- │   ├── screenshots/                       # Auto-captured screenshots on test failures
+- │   ├── support/                           # Cypress support commands and hooks
+- │   └── videos/                            # Cypress test execution recordings
+- ├── node_modules/
+- ├── cucumber-html-report.js               # Script to generate Cucumber HTML report
+- ├── cucumber-json-formatter.exe           # Binary used for formatting JSON to HTML
+- ├── cypress.config.js                     # Cypress configuration file
+- ├── package-lock.json
+- ├── package.json                          # Project dependencies and scripts
 
----
+## Setup
 
-## 🔧 Setup Instructions:
+1. **Install dependencies:**
 
-**1. Clone the repo:**
+   npm install
 
-- https://github.com/testshadab/cypress-mocha-automation-2025.git
----
+2. **Run Cypress + Cucumber tests:**
 
-**2. Install dependencies:**
-- npm install
----
+   npm test
+   This executes all .feature files in cypress/e2e/features with the Cucumber preprocessor.
 
-**3. Running Tests:**
-- Running Tests in headless mode (CLI)
-- npx cypress run
+## BDD Highlights
 
-- Running Tests in headed mode (UI)
-- npx cypress run --headed
----
+- Gherkin .feature files describe scenarios in plain English (Given/When/Then).
 
-**4. Interactive mode (GUI):**
-- npx cypress open
-- Select the E2E Testing
-- Select the browser (eg. Chrome) and click on Start E2E Testing in Chrome
-- Select the test that want to run 
----
+- Step definitions connect each step to Cypress code.
 
-## 🌐 Environment Configuration:
-**The framework supports multiple environments like dev and production.
-To run against a specific environment, update your test or use Cypress environment variables as needed:**
+- Page Objects encapsulate selectors & interactions.
 
-- npx cypress run --env environment=dev
----
+**Sample Gherkin snippet:**
+1. .feature file declares behavior:
 
-**Test credentials and other data are stored under:**
-- cypress/fixtures/dev/credentials.json
-- cypress/fixtures/production/credentials.json
----
+Given I open the home page
+When I search for "blue denim"
+Then I should see results containing "blue denim"
 
-## 📸 Reports, Videos, and Screenshots:
-**Screenshots of failed tests are saved in:**
-- cypress/screenshots/
----
+Mapped with step definitions in support/step_definitions.
 
-**Videos of test runs (if enabled):**
-- cypress/videos/
----
+2. Step definition:
+
+import HomePage from '../pageObjects/HomePage';
+Given('I visit the home page', () => {
+  HomePage.open();
+});
+
+## Configuration
+
+cypress.json example:
+{
+  "baseUrl": "https://example.com",
+  "testFiles": "**/*.feature",
+  "video": false
+}
+
+And in package.json:
+"cypress-cucumber-preprocessor": {
+  "nonGlobalStepDefinitions": true
+}
+
+## Running Tests
+
+Headed mode:
+
+npm test
+
+Headless (CI):
+
+npx cypress run
+Screenshots are captured automatically on failure and saved under cypress/screenshots.
+
+## Test Report Generation
+
+After executing your test cases, an HTML report is generated using the following command:
+
+npm run posttest
+
+##  Output Location:
+
+The final report is saved here:
+
+/cypress/reports/cucumber-htmlreport.html
+You can open this file in any browser to review detailed test execution results.
+
